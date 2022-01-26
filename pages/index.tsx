@@ -4,6 +4,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from 'styles/Home.module.css'
 import type { MarketItem } from 'lib/types'
+import { SetNetwork } from 'lib/utils'
 
 import { ethers } from 'ethers'
 import axios from 'axios'
@@ -13,26 +14,27 @@ import Web3Modal from 'web3modal'
 import Market from 'deployments/mumbai/NFTMarket.json'
 import NFT from 'deployments/mumbai/NFT.json'
 
-// Load env vars
-const network = process.env.NEXT_PUBLIC_NETWORK || ''
-const NFTMarketAddress = process.env.NEXT_PUBLIC_NFT_MARKET_ADDRESS || ''
-const NFTAddress = process.env.NEXT_PUBLIC_NFT_ADDRESS || ''
-
 const Home: NextPage = () => {
   const [nfts, setNfts] = useState<MarketItem[]>([])
   const [loadingState, setLoadingState] = useState<string>('not-loaded')
+
+  // Load the network info
+  const networkInfo = SetNetwork()
+
   useEffect(() => {
     loadNFTs()
   }, [])
 
   async function loadNFTs() {
-    /* create a generic provider and query for unsold market items */
-    const provider = new ethers.providers.JsonRpcProvider()
-    const tokenContract = new ethers.Contract(NFTAddress, NFT.abi, provider)
+    const tokenContract = new ethers.Contract(
+      networkInfo.nftAddress,
+      NFT.abi,
+      networkInfo.provider
+    )
     const marketContract = new ethers.Contract(
-      NFTMarketAddress,
+      networkInfo.nftMarketAddress,
       Market.abi,
-      provider
+      networkInfo.provider
     )
     const data = await marketContract.fetchMarketItems()
 
@@ -65,14 +67,18 @@ const Home: NextPage = () => {
     /* needs the user to sign the transaction, so will use Web3Provider and sign it */
     const web3Modal = new Web3Modal()
     const connection = await web3Modal.connect()
-    const provider = new ethers.providers.Web3Provider(connection)
+    const provider = networkInfo.provider
     const signer = provider.getSigner()
-    const contract = new ethers.Contract(NFTMarketAddress, Market.abi, signer)
+    const contract = new ethers.Contract(
+      networkInfo.nftMarketAddress,
+      Market.abi,
+      signer
+    )
 
     /* user will be prompted to pay the asking proces to complete the transaction */
     const price = ethers.utils.parseUnits(nft.price.toString(), 'ether')
     const transaction = await contract.createMarketSale(
-      NFTAddress,
+      networkInfo.nftAddress,
       nft.tokenId,
       {
         value: price,

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { NextPage } from 'next'
 
 import type { MarketItem } from 'lib/types'
+import { SetNetwork } from 'lib/utils'
 
 import { ethers } from 'ethers'
 import { create as ipfsHttpClient } from 'ipfs-http-client'
@@ -15,11 +16,6 @@ const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0')
 import Market from 'deployments/mumbai/NFTMarket.json'
 import NFT from 'deployments/mumbai/NFT.json'
 
-// Load env vars
-const network = process.env.NEXT_PUBLIC_NETWORK || ''
-const NFTMarketAddress = process.env.NEXT_PUBLIC_NFT_MARKET_ADDRESS || ''
-const NFTAddress = process.env.NEXT_PUBLIC_NFT_ADDRESS || ''
-
 const CreateItem: NextPage = () => {
   const [fileUrl, setFileUrl] = useState<string | null>(null)
   const [formInput, updateFormInput] = useState({
@@ -28,6 +24,8 @@ const CreateItem: NextPage = () => {
     description: '',
   })
   const router = useRouter()
+  // Load the network info
+  const networkInfo = SetNetwork()
 
   async function onChange(e) {
     const file = e.target.files[0]
@@ -68,7 +66,8 @@ const CreateItem: NextPage = () => {
     const signer = provider.getSigner()
 
     /* next, create the item */
-    let contract = new ethers.Contract(NFTAddress, NFT.abi, signer)
+    console.log('Creating sale, nftAddress: ', networkInfo.nftAddress)
+    let contract = new ethers.Contract(networkInfo.nftAddress, NFT.abi, signer)
     let transaction = await contract.createToken(url)
     let tx = await transaction.wait()
     let event = tx.events[0]
@@ -77,13 +76,22 @@ const CreateItem: NextPage = () => {
     const price = ethers.utils.parseUnits(formInput.price, 'ether')
 
     /* then list the item for sale on the marketplace */
-    contract = new ethers.Contract(NFTMarketAddress, Market.abi, signer)
+    contract = new ethers.Contract(
+      networkInfo.nftMarketAddress,
+      Market.abi,
+      signer
+    )
     let listingPrice = await contract.getListingPrice()
     listingPrice = listingPrice.toString()
 
-    transaction = await contract.createMarketItem(NFTAddress, tokenId, price, {
-      value: listingPrice,
-    })
+    transaction = await contract.createMarketItem(
+      networkInfo.nftAddress,
+      tokenId,
+      price,
+      {
+        value: listingPrice,
+      }
+    )
     await transaction.wait()
     router.push('/')
   }
