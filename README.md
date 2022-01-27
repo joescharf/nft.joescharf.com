@@ -9,10 +9,22 @@
 * `deployments/<network>` - ABIs
 * `scripts/deploy` - Deployment scripts
   
-## Install
-Checkout the repo
-Install the dependencies: yarn install
+## Running Locally
 
+```shell
+# checkout repo and install dependencies
+git clone ...
+cd web3.joescharf.com
+yarn install
+
+# set values in .env and .env.local
+
+# deploy contracts to local hardhat json-rpc node
+yarn hardhat node
+
+# start local next.js dev server
+yarn dev
+```
 ---
 ## Frontend
 
