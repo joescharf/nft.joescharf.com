@@ -1,8 +1,41 @@
-# Advanced Sample Hardhat Project
+# Web3 Apps
 
-This project demonstrates an advanced Hardhat use case, integrating other tools commonly used alongside Hardhat in the ecosystem.
+* Frontend Framework: Next.js
+* Web3 Environment: hardhat with hardhat-deploy
+* Language: Typescript
 
-The project comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts. It also comes with a variety of other tools, preconfigured to work with the project code.
+## Overview
+* `contracts` - Solidity contracts
+* `deployments/<network>` - ABIs
+* `scripts/deploy` - Deployment scripts
+  
+## Install
+Checkout the repo
+Install the dependencies: yarn install
+
+---
+## Frontend
+
+### Commands
+`yarn dev` - Execute development server
+
+### Environment
+---
+## Solidity Contracts 
+### Hardhat tasks
+
+* `yarn hardhat test` - run contract test scripts
+* `yarn hardhat node` - load hardhat rpc network and deploy contracts
+* `yarn hardhat deploy --network <network_name>` - Deploy contracts to specified network
+
+### Networks:
+* `hardhat` - Hardhat local network
+* `mumbai` - Polygon Mumbai testnet
+* `mainnet` - Polygon mainnet
+* `iotadefi` - iota-defi.com IOTA EVM
+
+---
+### Other hardhat info
 
 Try running some of the following tasks:
 
@@ -24,8 +57,7 @@ npx prettier '**/*.{json,sol,md}' --write
 npx solhint 'contracts/**/*.sol'
 npx solhint 'contracts/**/*.sol' --fix
 ```
-
-# Etherscan verification
+### Etherscan verification
 
 To try out Etherscan verification, you first need to deploy a contract to an Ethereum network that's supported by Etherscan, such as Ropsten.
 
@@ -41,12 +73,12 @@ Then, copy the deployment address and paste it in to replace `DEPLOYED_CONTRACT_
 npx hardhat verify --network ropsten DEPLOYED_CONTRACT_ADDRESS "Hello, Hardhat!"
 ```
 
-# Performance optimizations
+### Performance optimizations
 
 For faster runs of your tests and scripts, consider skipping ts-node's type checking by setting the environment variable `TS_NODE_TRANSPILE_ONLY` to `1` in hardhat's environment. For more details see [the documentation](https://hardhat.org/guides/typescript.html#performance-optimizations).
 
 
-## notes:
+# Notes:
 
 ```
 You need to install these dependencies to run the sample project:
