@@ -10,10 +10,6 @@ import { ethers } from 'ethers'
 import axios from 'axios'
 import Web3Modal from 'web3modal'
 
-// Import ABIs
-import Market from 'deployments/mumbai/NFTMarket.json'
-import NFT from 'deployments/mumbai/NFT.json'
-
 const Home: NextPage = () => {
   const [nfts, setNfts] = useState<MarketItem[]>([])
   const [loadingState, setLoadingState] = useState<string>('not-loaded')
@@ -27,13 +23,13 @@ const Home: NextPage = () => {
 
   async function loadNFTs() {
     const tokenContract = new ethers.Contract(
-      networkInfo.nftAddress,
-      NFT.abi,
+      networkInfo.nftABI.address,
+      networkInfo.nftABI.abi,
       networkInfo.provider
     )
     const marketContract = new ethers.Contract(
-      networkInfo.nftMarketAddress,
-      Market.abi,
+      networkInfo.nftMarketABI.address,
+      networkInfo.nftMarketABI.abi,
       networkInfo.provider
     )
     const data = await marketContract.fetchMarketItems()
@@ -46,8 +42,8 @@ const Home: NextPage = () => {
       data.map(async (i) => {
         const tokenUri = await tokenContract.tokenURI(i.tokenId)
         const meta = await axios.get(tokenUri)
-        let price = ethers.utils.formatUnits(i.price.toString(), 'ether')
-        let item = {
+        const price = ethers.utils.formatUnits(i.price.toString(), 'ether')
+        const item = {
           price,
           tokenId: i.tokenId.toNumber(),
           seller: i.seller,
@@ -70,15 +66,15 @@ const Home: NextPage = () => {
     const provider = networkInfo.provider
     const signer = provider.getSigner()
     const contract = new ethers.Contract(
-      networkInfo.nftMarketAddress,
-      Market.abi,
+      networkInfo.nftMarketABI.address,
+      networkInfo.nftMarketABI.abi,
       signer
     )
 
     /* user will be prompted to pay the asking proces to complete the transaction */
     const price = ethers.utils.parseUnits(nft.price.toString(), 'ether')
     const transaction = await contract.createMarketSale(
-      networkInfo.nftAddress,
+      networkInfo.nftABI.address,
       nft.tokenId,
       {
         value: price,

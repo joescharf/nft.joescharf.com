@@ -12,10 +12,6 @@ import Web3Modal from 'web3modal'
 // IPFS Client
 const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0')
 
-// Import ABIs
-import Market from 'deployments/mumbai/NFTMarket.json'
-import NFT from 'deployments/mumbai/NFT.json'
-
 const CreateItem: NextPage = () => {
   const [fileUrl, setFileUrl] = useState<string | null>(null)
   const [formInput, updateFormInput] = useState({
@@ -24,6 +20,7 @@ const CreateItem: NextPage = () => {
     description: '',
   })
   const router = useRouter()
+
   // Load the network info
   const networkInfo = SetNetwork()
 
@@ -66,26 +63,30 @@ const CreateItem: NextPage = () => {
     const signer = provider.getSigner()
 
     /* next, create the item */
-    console.log('Creating sale, nftAddress: ', networkInfo.nftAddress)
-    let contract = new ethers.Contract(networkInfo.nftAddress, NFT.abi, signer)
+    console.log('Creating sale, nftAddress: ', networkInfo.nftABI.address)
+    let contract = new ethers.Contract(
+      networkInfo.nftABI.address,
+      networkInfo.nftABI.abi,
+      signer
+    )
     let transaction = await contract.createToken(url)
-    let tx = await transaction.wait()
-    let event = tx.events[0]
-    let value = event.args[2]
-    let tokenId = value.toNumber()
+    const tx = await transaction.wait()
+    const event = tx.events[0]
+    const value = event.args[2]
+    const tokenId = value.toNumber()
     const price = ethers.utils.parseUnits(formInput.price, 'ether')
 
     /* then list the item for sale on the marketplace */
     contract = new ethers.Contract(
-      networkInfo.nftMarketAddress,
-      Market.abi,
+      networkInfo.nftMarketABI.address,
+      networkInfo.nftMarketABI.abi,
       signer
     )
     let listingPrice = await contract.getListingPrice()
     listingPrice = listingPrice.toString()
 
     transaction = await contract.createMarketItem(
-      networkInfo.nftAddress,
+      networkInfo.nftABI.address,
       tokenId,
       price,
       {

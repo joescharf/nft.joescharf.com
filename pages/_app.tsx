@@ -3,17 +3,9 @@ import type { AppProps } from 'next/app'
 import Link from 'next/link'
 import { SetNetwork } from 'lib/utils'
 
-// // Load env vars
-// const network = process.env.NEXT_PUBLIC_NETWORK || ''
-// const NFTMarketAddress = process.env.NEXT_PUBLIC_NFT_MARKET_ADDRESS || ''
-// const NFTAddress = process.env.NEXT_PUBLIC_NFT_ADDRESS || ''
-
 function MyApp({ Component, pageProps }: AppProps) {
   // Load the network info
   const networkInfo = SetNetwork()
-  const network = networkInfo.network
-  const NFTAddress = networkInfo.nftAddress
-  const NFTMarketAddress = networkInfo.nftMarketAddress
 
   return (
     <div className="flex flex-col h-screen">
@@ -45,9 +37,9 @@ function MyApp({ Component, pageProps }: AppProps) {
             NFT Tutorial by Nader Dabit
           </a>
         </p>
-        <p>Network : {network}</p>
-        <p>NFT Marketplace: {NFTMarketAddress}</p>
-        <p>NFT Address : {NFTAddress}</p>
+        <p>Network : {networkInfo.network}</p>
+        <p>NFT Marketplace: {networkInfo.nftMarketABI.address}</p>
+        <p>NFT Address : {networkInfo.nftABI.address}</p>
       </footer>
     </div>
   )
