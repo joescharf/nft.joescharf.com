@@ -1,0 +1,35 @@
+import { ethers } from 'ethers'
+
+// Import ABIs
+
+import MumbaiMarketABI from 'deployments/mumbai/NFTMarket.json'
+import MumbaiNFTABI from 'deployments/mumbai/NFT.json'
+import IotaDefiMarketABI from 'deployments/iotadefi/NFTMarket.json'
+import IotaDefiNFTABI from 'deployments/iotadefi/NFT.json'
+
+// import type { NetworkInfo } from 'lib/types'
+
+const networkInfo = {
+  default: 'mumbai',
+  networks: {
+    mumbai: {
+      network: 'mumbai',
+      nftMarketABI: MumbaiMarketABI,
+      nftABI: MumbaiNFTABI,
+      provider: new ethers.providers.JsonRpcProvider(
+        'https://rpc-mumbai.maticvigil.com'
+      ),
+      faucetUrl: 'https://faucet.polygon.technology/',
+    },
+    iotadefi: {
+      network: 'iotadefi',
+      nftMarketABI: IotaDefiMarketABI,
+      nftABI: IotaDefiNFTABI,
+      provider: new ethers.providers.JsonRpcProvider(
+        'https://evm.wasp.sc.iota.org'
+      ),
+    },
+  },
+}
+
+export default networkInfo

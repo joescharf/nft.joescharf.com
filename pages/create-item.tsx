@@ -2,7 +2,7 @@ import { useState } from 'react'
 import type { NextPage } from 'next'
 
 import type { MarketItem } from 'lib/types'
-import { SetNetwork } from 'lib/utils'
+import { SetNetwork } from 'lib/networks'
 
 import { ethers } from 'ethers'
 import { create as ipfsHttpClient } from 'ipfs-http-client'

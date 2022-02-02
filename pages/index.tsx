@@ -1,25 +1,46 @@
-import { useEffect, useState } from 'react'
+import * as React from 'react'
+import { NetworkContext } from 'context/networkContext'
+
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from 'styles/Home.module.css'
 import type { MarketItem } from 'lib/types'
-import { SetNetwork } from 'lib/utils'
+import { SetNetwork } from 'lib/networks'
 
 import { ethers } from 'ethers'
 import axios from 'axios'
 import Web3Modal from 'web3modal'
 
 const Home: NextPage = () => {
-  const [nfts, setNfts] = useState<MarketItem[]>([])
-  const [loadingState, setLoadingState] = useState<string>('not-loaded')
+  const [nfts, setNfts] = React.useState<MarketItem[]>([])
 
-  // Load the network info
-  const networkInfo = SetNetwork()
+  // set page loaded state
+  const [loading, setLoading] = React.useState(true)
 
-  useEffect(() => {
-    loadNFTs()
-  }, [])
+  // Get the network info from the context
+  const {
+    networkInfo,
+    contextLoading,
+    networkInfoChanged,
+    setNetworkInfoChanged,
+  } = React.useContext(NetworkContext) as React.ContextType<NetworkContext>
+
+  React.useEffect(() => {
+    if (!contextLoading) {
+      console.log('!contextLoading: loading NFTs')
+      loadNFTs()
+      setNetworkInfoChanged(false)
+    }
+  }, [contextLoading])
+
+  React.useEffect(() => {
+    if (!contextLoading && networkInfoChanged) {
+      console.log('NetworkInfoChanged loading NFTs')
+      loadNFTs()
+      setNetworkInfoChanged(false)
+    }
+  }, [networkInfoChanged])
 
   async function loadNFTs() {
     const tokenContract = new ethers.Contract(
@@ -56,7 +77,7 @@ const Home: NextPage = () => {
       })
     )
     setNfts(items)
-    setLoadingState('loaded')
+    setLoading(false)
   }
 
   async function buyNft(nft: MarketItem) {
@@ -84,7 +105,7 @@ const Home: NextPage = () => {
     loadNFTs()
   }
 
-  if (loadingState === 'loaded' && !nfts.length)
+  if (!loading && !nfts.length)
     return <h1 className="px-20 py-10 text-3xl">No items in marketplace</h1>
   return (
     <div className="flex justify-center">
