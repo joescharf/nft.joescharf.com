@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import * as React from 'react'
+import { NetworkContext } from 'context/networkContext'
 import type { NextPage } from 'next'
 
 import type { MarketItem } from 'lib/types'
-import { SetNetwork } from 'lib/networks'
 
 import { ethers } from 'ethers'
 import { create as ipfsHttpClient } from 'ipfs-http-client'
@@ -13,16 +13,37 @@ import Web3Modal from 'web3modal'
 const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0')
 
 const CreateItem: NextPage = () => {
-  const [fileUrl, setFileUrl] = useState<string | null>(null)
-  const [formInput, updateFormInput] = useState({
+  const [fileUrl, setFileUrl] = React.useState<string | null>(null)
+  const [formInput, updateFormInput] = React.useState({
     price: '',
     name: '',
     description: '',
   })
   const router = useRouter()
 
-  // Load the network info
-  const networkInfo = SetNetwork()
+  // Get the network info from the context
+  const {
+    networkInfo,
+    contextLoading,
+    networkInfoChanged,
+    setNetworkInfoChanged,
+  } = React.useContext(NetworkContext) as React.ContextType<NetworkContext>
+
+  // Wait for the context to load
+  React.useEffect(() => {
+    if (!contextLoading) {
+      console.log('!contextLoading')
+      setNetworkInfoChanged(false)
+    }
+  }, [contextLoading])
+
+  // If the network info has changed, reload the NFTs
+  React.useEffect(() => {
+    if (!contextLoading && networkInfoChanged) {
+      console.log('NetworkInfoChanged')
+      setNetworkInfoChanged(false)
+    }
+  }, [networkInfoChanged])
 
   async function onChange(e) {
     const file = e.target.files[0]
@@ -97,41 +118,52 @@ const CreateItem: NextPage = () => {
     router.push('/')
   }
 
-  return (
-    <div className="flex justify-center">
-      <div className="flex flex-col w-1/2 pb-12">
-        <input
-          placeholder="Asset Name"
-          className="p-4 mt-8 border rounded"
-          onChange={(e) =>
-            updateFormInput({ ...formInput, name: e.target.value })
-          }
-        />
-        <textarea
-          placeholder="Asset Description"
-          className="p-4 mt-2 border rounded"
-          onChange={(e) =>
-            updateFormInput({ ...formInput, description: e.target.value })
-          }
-        />
-        <input
-          placeholder="Asset Price in Matic"
-          className="p-4 mt-2 border rounded"
-          onChange={(e) =>
-            updateFormInput({ ...formInput, price: e.target.value })
-          }
-        />
-        <input type="file" name="Asset" className="my-4" onChange={onChange} />
-        {fileUrl && <img className="mt-4 rounded" width="350" src={fileUrl} />}
-        <button
-          onClick={createItem}
-          className="p-4 mt-4 font-bold text-white bg-pink-500 rounded shadow-lg"
-        >
-          Create Digital Asset
-        </button>
+  if (contextLoading) {
+    return <div>Loading...</div>
+  } else {
+    return (
+      <div className="flex justify-center">
+        <div className="flex flex-col w-1/2 pb-12">
+          <input
+            placeholder="Asset Name"
+            className="p-4 mt-8 border rounded"
+            onChange={(e) =>
+              updateFormInput({ ...formInput, name: e.target.value })
+            }
+          />
+          <textarea
+            placeholder="Asset Description"
+            className="p-4 mt-2 border rounded"
+            onChange={(e) =>
+              updateFormInput({ ...formInput, description: e.target.value })
+            }
+          />
+          <input
+            placeholder={`Asset Price in ${networkInfo.symbol}`}
+            className="p-4 mt-2 border rounded"
+            onChange={(e) =>
+              updateFormInput({ ...formInput, price: e.target.value })
+            }
+          />
+          <input
+            type="file"
+            name="Asset"
+            className="my-4"
+            onChange={onChange}
+          />
+          {fileUrl && (
+            <img className="mt-4 rounded" width="350" src={fileUrl} />
+          )}
+          <button
+            onClick={createItem}
+            className="p-4 mt-4 font-bold text-white bg-pink-500 rounded shadow-lg"
+          >
+            Create Digital Asset
+          </button>
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
 }
 
 export default CreateItem

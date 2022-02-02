@@ -10,9 +10,6 @@ import IotaDefiNFTABI from 'deployments/iotadefi/NFT.json'
 
 import type { NetworkInfo } from 'lib/types'
 
-// Load env vars
-let network = process.env.NEXT_PUBLIC_NETWORK || ''
-
 let networkInfo: typeof NetworkInfo
 if (process.env.NODE_ENV === 'production') {
   networkInfo = require('conf/networkInfo.prod').default
@@ -28,17 +25,6 @@ export function GetNetworks(): NetworkInfo {
 
 export function GetDefaultNetwork(): string {
   return networkInfo.default
-}
-
-export function SetNetwork(): NetworkInfo {
-  if (network === undefined) {
-    network = networkInfo.defaultNetwork
-  }
-  if (networkInfo.networks.hasOwnProperty(network)) {
-    return { default: networkInfo.default, ...networkInfo.networks[network] }
-  } else {
-    return {}
-  }
 }
 
 export function GetNetwork(net: string): NetworkInfo {

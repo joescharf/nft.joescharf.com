@@ -26,6 +26,7 @@ const Home: NextPage = () => {
     setNetworkInfoChanged,
   } = React.useContext(NetworkContext) as React.ContextType<NetworkContext>
 
+  // Wait for the context to load
   React.useEffect(() => {
     if (!contextLoading) {
       console.log('!contextLoading: loading NFTs')
@@ -34,6 +35,7 @@ const Home: NextPage = () => {
     }
   }, [contextLoading])
 
+  // If the network info has changed, reload the NFTs
   React.useEffect(() => {
     if (!contextLoading && networkInfoChanged) {
       console.log('NetworkInfoChanged loading NFTs')

@@ -12,6 +12,7 @@ export type MarketItem = {
 
 export type NetworkInfo = {
   network?: string
+  symbol?: string
   provider?: ethers.providers.Provider | ethers.Signer | undefined
   nftMarketABI?: any
   nftABI?: any

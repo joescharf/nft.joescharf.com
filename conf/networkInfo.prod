@@ -7,13 +7,12 @@ import MumbaiNFTABI from 'deployments/mumbai/NFT.json'
 import IotaDefiMarketABI from 'deployments/iotadefi/NFTMarket.json'
 import IotaDefiNFTABI from 'deployments/iotadefi/NFT.json'
 
-// import type { NetworkInfo } from 'lib/types'
-
 const networkInfo = {
   default: 'mumbai',
   networks: {
     mumbai: {
       network: 'mumbai',
+      symbol: 'MATIC',
       nftMarketABI: MumbaiMarketABI,
       nftABI: MumbaiNFTABI,
       provider: new ethers.providers.JsonRpcProvider(
@@ -23,6 +22,7 @@ const networkInfo = {
     },
     iotadefi: {
       network: 'iotadefi',
+      symbol: 'IDEFI',
       nftMarketABI: IotaDefiMarketABI,
       nftABI: IotaDefiNFTABI,
       provider: new ethers.providers.JsonRpcProvider(
