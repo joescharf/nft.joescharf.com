@@ -15,9 +15,9 @@ let network = process.env.NEXT_PUBLIC_NETWORK || ''
 
 let networkInfo: typeof NetworkInfo
 if (process.env.NODE_ENV === 'production') {
-  networkInfo = require('./networkInfo.prod').default
+  networkInfo = require('conf/networkInfo.prod').default
 } else {
-  networkInfo = require('./networkInfo.dev').default
+  networkInfo = require('conf/networkInfo.dev').default
 }
 export { networkInfo }
 
