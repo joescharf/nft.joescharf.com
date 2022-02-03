@@ -2,8 +2,6 @@ import * as React from 'react'
 import { NetworkContext } from 'context/networkContext'
 import type { NextPage } from 'next'
 
-import type { MarketItem } from 'lib/types'
-
 import { ethers } from 'ethers'
 import { create as ipfsHttpClient } from 'ipfs-http-client'
 import { useRouter } from 'next/router'
@@ -45,7 +43,7 @@ const CreateItem: NextPage = () => {
     }
   }, [networkInfoChanged])
 
-  async function onChange(e) {
+  async function onChange(e): Promise<void> {
     const file = e.target.files[0]
     try {
       const added = await client.add(file, {
@@ -58,26 +56,7 @@ const CreateItem: NextPage = () => {
     }
   }
 
-  async function createItem() {
-    const { name, description, price } = formInput
-    if (!name || !description || !price || !fileUrl) return
-    /* first, upload to IPFS */
-    const data = JSON.stringify({
-      name,
-      description,
-      image: fileUrl,
-    })
-    try {
-      const added = await client.add(data)
-      const url = `https://ipfs.infura.io/ipfs/${added.path}`
-      /* after file is uploaded to IPFS, pass the URL to save it on Polygon */
-      createSale(url)
-    } catch (error) {
-      console.log('Error uploading file: ', error)
-    }
-  }
-
-  async function createSale(url: string) {
+  async function createSale(url: string): Promise<void> {
     const web3Modal = new Web3Modal()
     const connection = await web3Modal.connect()
     const provider = new ethers.providers.Web3Provider(connection)
@@ -116,6 +95,25 @@ const CreateItem: NextPage = () => {
     )
     await transaction.wait()
     router.push('/')
+  }
+
+  async function createItem(): Promise<void> {
+    const { name, description, price } = formInput
+    if (!name || !description || !price || !fileUrl) return
+    /* first, upload to IPFS */
+    const data = JSON.stringify({
+      name,
+      description,
+      image: fileUrl,
+    })
+    try {
+      const added = await client.add(data)
+      const url = `https://ipfs.infura.io/ipfs/${added.path}`
+      /* after file is uploaded to IPFS, pass the URL to save it on Polygon */
+      createSale(url)
+    } catch (error) {
+      console.log('Error uploading file: ', error)
+    }
   }
 
   if (contextLoading) {

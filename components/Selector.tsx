@@ -1,10 +1,11 @@
+import * as React from 'react'
 interface SelectorProps {
   options: string[]
   label: string
   value: string
   onChangeHandler: (option: string) => void
 }
-export default function Selector(props: SelectorProps) {
+export default function Selector(props: SelectorProps): React.ReactElement {
   const { options, label, value, onChangeHandler } = props
   return (
     <div>

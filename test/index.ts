@@ -1,5 +1,5 @@
-import { expect } from 'chai'
-import { ethers, deployments, getNamedAccounts } from 'hardhat'
+// import { expect } from 'chai'
+import { ethers, deployments } from 'hardhat'
 import { CONTRACTS } from '../scripts/constants'
 
 describe('NFTMarket', function () {
@@ -18,11 +18,11 @@ describe('NFTMarket', function () {
 
     // hardhat-deploy simplifications:
     await deployments.fixture([CONTRACTS.market, CONTRACTS.nft])
-    const { deployer, seller, buyer } = await getNamedAccounts()
+    // const { deployer, seller, buyer } = await getNamedAccounts()
     const market = await ethers.getContract(CONTRACTS.market)
     const nft = await ethers.getContract(CONTRACTS.nft)
 
-    let listingPrice = await market.getListingPrice()
+    const listingPrice = await market.getListingPrice()
     const listingPriceStr = listingPrice.toString()
 
     const auctionPrice = ethers.utils.parseUnits('1', 'ether')
@@ -39,6 +39,7 @@ describe('NFTMarket', function () {
       value: listingPriceStr,
     })
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, buyerAddress] = await ethers.getSigners()
 
     /* execute sale of token to another user */
@@ -47,11 +48,11 @@ describe('NFTMarket', function () {
       .createMarketSale(nft.address, 1, { value: auctionPrice })
 
     /* query for and return the unsold items */
-    let items = await market.fetchMarketItems()
-    let items2 = await Promise.all(
+    const items = await market.fetchMarketItems()
+    const items2 = await Promise.all(
       items.map(async (i: any) => {
         const tokenUri = await nft.tokenURI(i.tokenId)
-        let item = {
+        const item = {
           price: i.price.toString(),
           tokenId: i.tokenId.toString(),
           seller: i.seller,

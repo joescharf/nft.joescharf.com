@@ -3,7 +3,7 @@ import { NetworkContext } from 'context/networkContext'
 
 const environment = process.env.NODE_ENV || 'undefined'
 
-export default function Footer() {
+export default function Footer(): React.ReactElement {
   const { networkInfo } = React.useContext(
     NetworkContext
   ) as React.ContextType<NetworkContext>

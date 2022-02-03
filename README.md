@@ -106,3 +106,24 @@ Iota-defi.com Deployment: yarn hardhat deploy --network iotadefi
 
 deploying "NFTMarket" (tx: 0xf11431bfcca5057c8ba949e8c54106ca0362bad43890721dac2f5c1ed89112cc)...: deployed at 0x7F220ddbd322AB6e20367Bd69030cBa9C654A4d4 with 1500897 gas
 deploying "NFT" (tx: 0xe8edc4616983467ace608fdf5c08008735a19a23879dc1a2bf8eed363589bd37)...: deployed at 0x67360B4b85aaB3b04E5eDa2f83D2e3e443245D2F with 2523747 gas
+
+
+Removed package.json eslint crap:
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-import-resolver-typescript": "^2.5.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-promise": "^5.1.0",
+
+eslintrc.js extends:
+  'standard',
+    'plugin:prettier/recommended',
+    'plugin:node/recommended',
+
+rules:
+    'node/no-unsupported-features/es-syntax': [
+      'error',
+      { ignores: ['modules'] },
+    ],

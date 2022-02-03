@@ -2,15 +2,11 @@ import * as React from 'react'
 import { NetworkContext } from 'context/networkContext'
 
 import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from 'styles/Home.module.css'
 import type { MarketItem } from 'lib/types'
-import { SetNetwork } from 'lib/networks'
 
 import { ethers } from 'ethers'
 import axios from 'axios'
-import Web3Modal from 'web3modal'
+// import Web3Modal from 'web3modal'
 
 const Home: NextPage = () => {
   const [nfts, setNfts] = React.useState<MarketItem[]>([])
@@ -44,7 +40,7 @@ const Home: NextPage = () => {
     }
   }, [networkInfoChanged])
 
-  async function loadNFTs() {
+  async function loadNFTs(): Promise<void> {
     const tokenContract = new ethers.Contract(
       networkInfo.nftABI.address,
       networkInfo.nftABI.abi,
@@ -83,10 +79,10 @@ const Home: NextPage = () => {
     setLoading(false)
   }
 
-  async function buyNft(nft: MarketItem) {
+  async function buyNft(nft: MarketItem): Promise<void> {
     /* needs the user to sign the transaction, so will use Web3Provider and sign it */
-    const web3Modal = new Web3Modal()
-    const connection = await web3Modal.connect()
+    // const web3Modal = new Web3Modal()
+    // const connection = await web3Modal.connect()
     const provider = networkInfo.provider
     const signer = provider.getSigner()
     const contract = new ethers.Contract(
