@@ -25,7 +25,7 @@ const networkInfo = {
       provider: new ethers.providers.JsonRpcProvider(
         'https://rpc-mumbai.maticvigil.com'
       ),
-      faucetUrl: 'https://faucet.polygon.technology/',
+      faucetURL: 'https://faucet.polygon.technology/',
     },
     iotadefi: {
       network: 'iotadefi',

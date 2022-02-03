@@ -97,33 +97,14 @@ You need to install these dependencies to run the sample project:
   yarn add --dev "hardhat@^2.8.3" "@nomiclabs/hardhat-waffle@^2.0.0" "ethereum-waffle@^3.0.0" "chai@^4.2.0" "@nomiclabs/hardhat-ethers@^2.0.0" "ethers@^5.0.0" "@nomiclabs/hardhat-etherscan@^2.1.3" "dotenv@^10.0.0" "eslint@^7.29.0" "eslint-config-prettier@^8.3.0" "eslint-config-standard@^16.0.3" "eslint-plugin-import@^2.23.4" "eslint-plugin-node@^11.1.0" "eslint-plugin-prettier@^3.4.0" "eslint-plugin-promise@^5.1.0" "hardhat-gas-reporter@^1.0.4" "prettier@^2.3.2" "prettier-plugin-solidity@^1.0.0-beta.13" "solhint@^3.3.6" "solidity-coverage@^0.7.16" "@typechain/ethers-v5@^7.0.1" "@typechain/hardhat@^2.3.0" "@typescript-eslint/eslint-plugin@^4.29.1" "@typescript-eslint/parser@^4.29.1" "@types/chai@^4.2.21" "@types/node@^12.0.0" "@types/mocha@^9.0.0" "ts-node@^10.1.0" "typechain@^5.1.2" "typescript@^4.5.2"
 
 ```
-Mumbai deployment yarn hardhat deploy --network mumbai:
+Mumbai deployment `yarn hardhat deploy --network mumbai`
 
 deploying "NFTMarket" (tx: 0x534f73189ba4e16c5ceb578776e3558e3f0a8b466717de8b4d0b4cb43404235e)...: deployed at 0x7F220ddbd322AB6e20367Bd69030cBa9C654A4d4 with 1500897 gas
 deploying "NFT" (tx: 0x4c31200aca1588f2e9e7aea5e008d1f03bd0094a0a904465d273032deb293a82)...: deployed at 0x67360B4b85aaB3b04E5eDa2f83D2e3e443245D2F with 2523747 gas
 
-Iota-defi.com Deployment: yarn hardhat deploy --network iotadefi
+Iota-defi.com Deployment: `yarn hardhat deploy --network iotadefi`
 
 deploying "NFTMarket" (tx: 0xf11431bfcca5057c8ba949e8c54106ca0362bad43890721dac2f5c1ed89112cc)...: deployed at 0x7F220ddbd322AB6e20367Bd69030cBa9C654A4d4 with 1500897 gas
 deploying "NFT" (tx: 0xe8edc4616983467ace608fdf5c08008735a19a23879dc1a2bf8eed363589bd37)...: deployed at 0x67360B4b85aaB3b04E5eDa2f83D2e3e443245D2F with 2523747 gas
 
-
-Removed package.json eslint crap:
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-config-standard": "^16.0.3",
-    "eslint-plugin-import": "^2.23.4",
-    "eslint-import-resolver-typescript": "^2.5.0",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-prettier": "^3.4.0",
-    "eslint-plugin-promise": "^5.1.0",
-
-eslintrc.js extends:
-  'standard',
-    'plugin:prettier/recommended',
-    'plugin:node/recommended',
-
-rules:
-    'node/no-unsupported-features/es-syntax': [
-      'error',
-      { ignores: ['modules'] },
-    ],
+Reset deployment like so: `yarn hardhat deploy --network iotadefi --reset`
