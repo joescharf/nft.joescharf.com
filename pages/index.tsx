@@ -56,6 +56,7 @@ const Home: NextPage = () => {
       networkInfo.provider
     )
     const data = await marketContract.fetchMarketItems()
+    console.log('data: ', data)
 
     /*
      *  map over items returned from smart contract and format

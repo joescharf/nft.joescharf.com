@@ -28,9 +28,46 @@ export default function Nav() {
     }
   }, [contextLoading])
 
+  async function checkAccounts() {
+    if (window.ethereum) {
+      console.log('found window.ethereum')
+      const accounts = await window.ethereum.request({
+        method: 'eth_requestAccounts',
+      })
+      console.log('accounts: ', accounts)
+    }
+  }
+
+  async function addChain() {
+    // If the chainId is set in networkinfo:
+    if (networkInfo.chainId) {
+      if (window.ethereum) {
+        console.log('found window.ethereum')
+        window.ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [
+            {
+              chainId: networkInfo.chainId,
+              chainName: networkInfo.chainName,
+              nativeCurrency: {
+                name: networkInfo.symbol,
+                symbol: networkInfo.symbol,
+                decimals: networkInfo.decimals,
+              },
+              rpcUrls: networkInfo.rpcUrls,
+              blockExplorerUrls: networkInfo.blockExplorerUrls,
+            },
+          ],
+        })
+      }
+    }
+  }
+
   if (contextLoading) {
     return <div>Loading...</div>
   } else {
+    checkAccounts()
+
     return (
       <nav className="p-6 border-b">
         <div className="flex justify-between">
@@ -47,10 +84,21 @@ export default function Nav() {
             ></Selector>
             {networkInfo.faucetURL && (
               <Link href={networkInfo.faucetURL}>
-                <a className="text-sm text-blue-500" target="_blank">
+                <a className="text-xs text-blue-500" target="_blank">
                   Token Faucet
                 </a>
               </Link>
+            )}
+            {networkInfo.chainId && (
+              <button
+                className="w-full px-12 py-2 text-xs font-bold text-white bg-pink-500 rounded"
+                onClick={() => {
+                  const res = addChain()
+                  console.log(res)
+                }}
+              >
+                Add Chain
+              </button>
             )}
           </div>
         </div>

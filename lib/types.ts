@@ -12,7 +12,12 @@ export type MarketItem = {
 
 export type NetworkInfo = {
   network?: string
+  chainId?: string
+  chainName?: string
   symbol?: string
+  decimals?: number
+  rpcUrls?: string[]
+  blockExplorerUrls?: string[]
   provider?: ethers.providers.Provider | ethers.Signer | undefined
   nftMarketABI?: any
   nftABI?: any

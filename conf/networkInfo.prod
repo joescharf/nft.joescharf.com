@@ -12,7 +12,14 @@ const networkInfo = {
   networks: {
     mumbai: {
       network: 'mumbai',
+
+      chainId: '0x13881',
+      chainName: 'Mumbai-Polygon',
       symbol: 'MATIC',
+      decimals: 18,
+      rpcUrls: ['https://rpc-mumbai.maticvigil.com'],
+      blockExplorerUrls: ['https://mumbai.polygonscan.com/'],
+
       nftMarketABI: MumbaiMarketABI,
       nftABI: MumbaiNFTABI,
       provider: new ethers.providers.JsonRpcProvider(
@@ -22,11 +29,18 @@ const networkInfo = {
     },
     iotadefi: {
       network: 'iotadefi',
+
+      chainId: '0x433',
+      chainName: 'iota-defi.com',
       symbol: 'IDEFI',
+      decimals: 18,
+      rpcUrls: ['https://evm.wasp.sc.iota-defi.com'],
+      blockExplorerUrls: [],
+
       nftMarketABI: IotaDefiMarketABI,
       nftABI: IotaDefiNFTABI,
       provider: new ethers.providers.JsonRpcProvider(
-        'https://evm.wasp.sc.iota.org'
+        'https://evm.wasp.sc.iota-defi.com'
       ),
     },
   },
