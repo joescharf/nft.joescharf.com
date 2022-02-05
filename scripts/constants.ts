@@ -3,4 +3,5 @@ export const CONTRACTS: Record<string, string> = {
   nft: 'NFT',
   ethFaucet: 'ETHFaucet',
   scharfnadoERC20: 'ScharfnadoERC20',
+  scharfnadoFaucet: 'ScharfnadoFaucet',
 }
