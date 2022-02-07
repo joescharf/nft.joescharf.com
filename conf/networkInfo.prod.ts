@@ -43,7 +43,6 @@ const networkInfo = {
       symbol: 'ETH',
       decimals: 18,
       rpcUrls: ['https://evm.wasp.sc.iota-defi.com'],
-      blockExplorerUrls: [],
 
       // ABIs
       nftMarketABI: IotaDefiMarketABI,
