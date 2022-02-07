@@ -53,6 +53,7 @@ const Home: NextPage = () => {
       networkInfo.provider
     )
     const data = await marketContract.fetchMarketItems()
+    console.log('Fetche market items: ', data)
 
     /*
      *  map over items returned from smart contract and format
@@ -67,7 +68,7 @@ const Home: NextPage = () => {
           price,
           tokenId: i.tokenId.toNumber(),
           seller: i.seller,
-          owner: i.owner,
+          owner: i.buyer,
           image: meta.data.image,
           name: meta.data.name,
           description: meta.data.description,

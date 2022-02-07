@@ -74,7 +74,7 @@ const Home: NextPage = () => {
           price,
           tokenId: i.tokenId.toNumber(),
           seller: i.seller,
-          owner: i.owner,
+          owner: i.buyer,
           sold: i.sold,
           image: meta.data.image,
         }
