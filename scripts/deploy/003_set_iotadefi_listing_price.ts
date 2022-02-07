@@ -1,3 +1,6 @@
+// Since it is uncertain where the protocol faucet for iotadefi lives, we will
+// set the listingPrice of NFTs on this chain to 0 for now.
+
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
 import { DeployFunction } from 'hardhat-deploy/types'
 import { CONTRACTS } from '../constants'

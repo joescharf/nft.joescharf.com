@@ -1,3 +1,6 @@
+// Deploy a custom ERC20 token and a faucet that will dispense tokens.
+// Eventually can use this token as the base currency for the NFT marketplace
+
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
 import { DeployFunction } from 'hardhat-deploy/types'
 import { CONTRACTS } from '../constants'

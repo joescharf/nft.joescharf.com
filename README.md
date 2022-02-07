@@ -2,7 +2,7 @@
 
 
 ## Intro
-This app is based on [Nader Dabit's](https://twitter.com/dabit3) excellent [How to Build a Full Stack NFT Marketplace with Polygon and Next.js](https://www.youtube.com/watch?v=GKJBEEXUha0) tutorial available from this [github repository](https://github.com/dabit3/polygon-ethereum-nextjs-marketplace/). 
+This app is based on [Nader Dabit's](https://twitter.com/dabit3) excellent [How to Build a Full Stack NFT Marketplace with Polygon and Next.js](https://www.youtube.com/watch?v=GKJBEEXUha0) tutorial ([step-by-step guide](https://dev.to/dabit3/building-scalable-full-stack-apps-on-ethereum-with-polygon-2cfb) |  [github](https://github.com/dabit3/polygon-ethereum-nextjs-marketplace/)). 
 
 I have used this tutorial to come up to speed and experiment with smart contracts and frontend web3 primitives. I've also added some additional features and updates.
 

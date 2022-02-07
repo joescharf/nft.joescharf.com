@@ -10,8 +10,7 @@ import Web3Modal from 'web3modal'
 
 const Home: NextPage = () => {
   const [nfts, setNfts] = React.useState<MarketItem[]>([])
-
-  // set page loaded state
+  const [sold, setSold] = React.useState([])
   const [loading, setLoading] = React.useState(true)
 
   // Get the network info from the context
@@ -27,7 +26,6 @@ const Home: NextPage = () => {
     if (!contextLoading) {
       console.log('!contextLoading: loading NFTs')
       loadNFTs()
-      setNetworkInfoChanged(false)
     }
   }, [contextLoading])
 
@@ -41,7 +39,16 @@ const Home: NextPage = () => {
   }, [networkInfoChanged])
 
   async function loadNFTs(): Promise<void> {
-    // Setup the contracts and fetch the nfts from marketContract
+    // Initialize the web3modal -> signer
+    const web3Modal = new Web3Modal({
+      network: networkInfo.network,
+      cacheProvider: true,
+    })
+    const connection = await web3Modal.connect()
+    const provider = new ethers.providers.Web3Provider(connection)
+    const signer = provider.getSigner()
+
+    // Setup the contracts
     const tokenContract = new ethers.Contract(
       networkInfo.nftABI.address,
       networkInfo.nftABI.abi,
@@ -50,9 +57,9 @@ const Home: NextPage = () => {
     const marketContract = new ethers.Contract(
       networkInfo.nftMarketABI.address,
       networkInfo.nftMarketABI.abi,
-      networkInfo.provider
+      signer
     )
-    const data = await marketContract.fetchMarketItems()
+    const data = await marketContract.fetchItemsCreated()
 
     /*
      *  map over items returned from smart contract and format
@@ -68,78 +75,59 @@ const Home: NextPage = () => {
           tokenId: i.tokenId.toNumber(),
           seller: i.seller,
           owner: i.owner,
+          sold: i.sold,
           image: meta.data.image,
-          name: meta.data.name,
-          description: meta.data.description,
         }
         return item
       })
     )
+    // Create filtered array of items that have been sold
+    const soldItems = items.filter((i) => i.sold)
+    setSold(soldItems)
     setNfts(items)
     setLoading(false)
   }
 
-  async function buyNft(nft: MarketItem): Promise<void> {
-    // Initialize the web3modal -> signer
-    const web3Modal = new Web3Modal()
-    const connection = await web3Modal.connect()
-    const provider = new ethers.providers.Web3Provider(connection)
-    const signer = provider.getSigner()
-
-    // Setup the contracts
-    const contract = new ethers.Contract(
-      networkInfo.nftMarketABI.address,
-      networkInfo.nftMarketABI.abi,
-      signer
-    )
-
-    /* user will be prompted to pay the asking proces to complete the transaction */
-    const price = ethers.utils.parseUnits(nft.price.toString(), 'ether')
-    const transaction = await contract.createMarketSale(
-      networkInfo.nftABI.address,
-      nft.tokenId,
-      {
-        value: price,
-      }
-    )
-    await transaction.wait()
-    loadNFTs()
-  }
-
   if (!loading && !nfts.length)
-    return <h1 className="px-20 py-10 text-3xl">No items in marketplace</h1>
+    return <h1 className="px-20 py-10 text-3xl">No assets created</h1>
   return (
-    <div className="flex justify-center">
-      <div className="px-4" style={{ maxWidth: '1600px' }}>
+    <div>
+      <div className="p-4">
+        <h2 className="py-2 text-2xl">Items Created</h2>
         <div className="grid grid-cols-1 gap-4 pt-4 sm:grid-cols-2 lg:grid-cols-4">
           {nfts.map((nft, i) => (
             <div key={i} className="overflow-hidden border shadow rounded-xl">
-              <img src={nft.image} />
-              <div className="p-4">
-                <p
-                  style={{ height: '64px' }}
-                  className="text-2xl font-semibold"
-                >
-                  {nft.name}
-                </p>
-                <div style={{ height: '70px', overflow: 'hidden' }}>
-                  <p className="text-gray-400">{nft.description}</p>
-                </div>
-              </div>
+              <img src={nft.image} className="rounded" />
               <div className="p-4 bg-black">
-                <p className="mb-4 text-2xl font-bold text-white">
-                  {nft.price} {networkInfo.symbol}
+                <p className="text-2xl font-bold text-white">
+                  Price - {nft.price} {networkInfo.symbol}
                 </p>
-                <button
-                  className="w-full px-12 py-2 font-bold text-white bg-pink-500 rounded"
-                  onClick={() => buyNft(nft)}
-                >
-                  Buy
-                </button>
               </div>
             </div>
           ))}
         </div>
+      </div>
+      <div className="px-4">
+        {Boolean(sold.length) && (
+          <div>
+            <h2 className="py-2 text-2xl">Items sold</h2>
+            <div className="grid grid-cols-1 gap-4 pt-4 sm:grid-cols-2 lg:grid-cols-4">
+              {sold.map((nft, i) => (
+                <div
+                  key={i}
+                  className="overflow-hidden border shadow rounded-xl"
+                >
+                  <img src={nft.image} className="rounded" />
+                  <div className="p-4 bg-black">
+                    <p className="text-2xl font-bold text-white">
+                      Price - {nft.price} {networkInfo.symbol}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )
