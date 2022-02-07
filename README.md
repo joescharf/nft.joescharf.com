@@ -8,7 +8,9 @@ I have used this tutorial to come up to speed and experiment with smart contract
 
 My production deployment of this repo can be found at [Scharfnado NFT Marketplace](https://nft.joescharf.com).
 
-## Additions to source repo
+If you find this helpful or have questions, get in touch with me on [Twitter](https://twitter.com/joescharf)
+
+## New Features and Additions
 * Typescript as much as possible
 * [hardhat-deploy plugin](https://github.com/wighawag/hardhat-deploy) to simplify contract deployment and testing with [hardhat](https://hardhat.org/)
 * Multi-chain capability - define your chains in `conf/networkInfo.*.ts`
@@ -17,11 +19,11 @@ My production deployment of this repo can be found at [Scharfnado NFT Marketplac
 
 
 ## Overview
+* `conf` - Network configurations for frontend
 * `contracts` - Solidity contracts
 * `deployments/<network>` - ABIs per network/chain
 * `scripts/deploy` - Contract deployment scripts
 * `test` - Contract tests
-* `conf` - Network configurations
   
 ## Running Locally
 
