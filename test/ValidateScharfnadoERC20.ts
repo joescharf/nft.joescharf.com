@@ -5,14 +5,10 @@ import { CONTRACTS } from '../scripts/constants'
 describe('scharfnadoERC20', function () {
   it('Should validate ScharfnadoERC20 created and minted', async function () {
     await deployments.fixture([CONTRACTS.scharfnadoERC20])
-    const { deployer, seller } = await getNamedAccounts()
+    const { deployer } = await getNamedAccounts()
     const scharfnadoERC20 = await ethers.getContract(CONTRACTS.scharfnadoERC20)
 
     const amountMinted = ethers.utils.parseUnits('1000000', 'ether')
-
-    // get decimals of contract
-    const decimals = await scharfnadoERC20.decimals()
-    const decimalsStr = decimals.toString()
 
     // get balance of deployer
     const deployerBalance = await scharfnadoERC20.balanceOf(deployer)
@@ -51,7 +47,7 @@ describe('scharfnadoERC20', function () {
 
     const signer = await ethers.provider.getSigner(seller)
 
-    const amountDispensed = await faucetContract.connect(signer).dispense()
+    await faucetContract.connect(signer).dispense()
 
     const sellerBalance = await scharfnadoERC20Contract
       .connect(deployer)

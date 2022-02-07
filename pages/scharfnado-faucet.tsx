@@ -7,9 +7,6 @@ import { useRouter } from 'next/router'
 import Web3Modal from 'web3modal'
 
 const SnadoFaucet: NextPage = () => {
-  const [formInput, updateFormInput] = React.useState({
-    amount: 1.0,
-  })
   const router = useRouter()
 
   // Get the network info from the context
@@ -47,14 +44,13 @@ const SnadoFaucet: NextPage = () => {
       'Dispensing from faucet, FaucetAddress: ',
       networkInfo.snadoFaucetABI.address
     )
-    let contract = new ethers.Contract(
+    const contract = new ethers.Contract(
       networkInfo.snadoFaucetABI.address,
       networkInfo.snadoFaucetABI.abi,
       signer
     )
-    let transaction = await contract.dispense()
-    const tx = await transaction.wait()
-    console.log('tx: ', tx)
+    const transaction = await contract.dispense()
+    await transaction.wait()
     router.push('/')
   }
 

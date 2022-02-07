@@ -3,7 +3,7 @@ import { DeployFunction } from 'hardhat-deploy/types'
 import { CONTRACTS } from '../constants'
 
 const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
-  const { deployments, getNamedAccounts, network, ethers } = hre
+  const { getNamedAccounts, network, ethers } = hre
 
   if (network.name !== 'iotadefi') {
     return

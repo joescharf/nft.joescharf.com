@@ -6,7 +6,6 @@ import { NetworkContext } from 'context/networkContext'
 
 // Retrieve network info
 const networkOptions = GetNetworks()
-const defaultNetwork = GetDefaultNetwork()
 
 export default function Nav(): React.ReactElement {
   // Get the network info from the context
@@ -40,15 +39,15 @@ export default function Nav(): React.ReactElement {
     }
   }, [contextLoading])
 
-  async function checkAccounts(): Promise<void> {
-    if (window.ethereum) {
-      console.log('found window.ethereum')
-      const accounts = await window.ethereum.request({
-        method: 'eth_requestAccounts',
-      })
-      console.log('accounts: ', accounts)
-    }
-  }
+  // async function checkAccounts(): Promise<void> {
+  //   if (window.ethereum) {
+  //     console.log('found window.ethereum')
+  //     const accounts = await window.ethereum.request({
+  //       method: 'eth_requestAccounts',
+  //     })
+  //     console.log('accounts: ', accounts)
+  //   }
+  // }
 
   async function addChain(): Promise<void> {
     // If the chainId is set in networkinfo:
