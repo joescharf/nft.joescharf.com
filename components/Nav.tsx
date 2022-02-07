@@ -109,7 +109,7 @@ export default function Nav(): React.ReactElement {
                   console.log(res)
                 }}
               >
-                Add Chain
+                Add / Switch Chain
               </button>
             )}
           </div>
