@@ -126,7 +126,7 @@ const Home: NextPage = () => {
               </div>
               <div className="p-4 bg-black">
                 <p className="mb-4 text-2xl font-bold text-white">
-                  {nft.price} Matic
+                  {nft.price} {networkInfo.symbol}
                 </p>
                 <button
                   className="w-full px-12 py-2 font-bold text-white bg-pink-500 rounded"

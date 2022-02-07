@@ -17,10 +17,9 @@ const networkInfo = {
     hardhat: {
       network: 'hardhat',
 
-      listingFee: '0.025',
-      listingSymbol: 'ETH',
-
       symbol: 'HHAT',
+
+      // ABIs
       nftMarketABI: HardhatMarketABI,
       nftABI: HardhatNFTABI,
       snadoFaucetABI: HardhatSnadoFaucetABI,
@@ -54,7 +53,7 @@ const networkInfo = {
       // Network config
       chainId: '0x433',
       chainName: 'iota-defi.com',
-      symbol: 'IDEFI',
+      symbol: 'ETH',
       decimals: 18,
       rpcUrls: ['https://evm.wasp.sc.iota-defi.com'],
 
@@ -62,6 +61,8 @@ const networkInfo = {
       nftMarketABI: IotaDefiMarketABI,
       nftABI: IotaDefiNFTABI,
       snadoFaucetABI: IotaDefiSnadoFaucetABI,
+
+      // Provider instance
       provider: new ethers.providers.JsonRpcProvider(
         'https://evm.wasp.sc.iota-defi.com'
       ),

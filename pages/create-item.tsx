@@ -148,7 +148,8 @@ const CreateItem: NextPage = () => {
             Listing Fee:{' '}
             {listingPrice
               ? ethers.utils.formatEther(listingPrice)
-              : 'Loading...'}
+              : 'Loading...'}{' '}
+            {networkInfo.symbol}
           </h2>
           <input
             placeholder="Asset Name"
