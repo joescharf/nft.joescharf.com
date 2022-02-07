@@ -4,8 +4,10 @@ import { ethers } from 'ethers'
 
 import MumbaiMarketABI from 'deployments/mumbai/NFTMarket.json'
 import MumbaiNFTABI from 'deployments/mumbai/NFT.json'
+import MumbaiSnadoFaucetABI from 'deployments/mumbai/ScharfnadoFaucet.json'
 import IotaDefiMarketABI from 'deployments/iotadefi/NFTMarket.json'
 import IotaDefiNFTABI from 'deployments/iotadefi/NFT.json'
+import IotaDefiSnadoFaucetABI from 'deployments/iotadefi/ScharfnadoFaucet.json'
 
 const networkInfo = {
   default: 'mumbai',
@@ -22,6 +24,7 @@ const networkInfo = {
 
       nftMarketABI: MumbaiMarketABI,
       nftABI: MumbaiNFTABI,
+      snadoFaucetABI: MumbaiSnadoFaucetABI,
       provider: new ethers.providers.JsonRpcProvider(
         'https://rpc-mumbai.maticvigil.com'
       ),
@@ -39,6 +42,7 @@ const networkInfo = {
 
       nftMarketABI: IotaDefiMarketABI,
       nftABI: IotaDefiNFTABI,
+      snadoFaucetABI: IotaDefiSnadoFaucetABI,
       provider: new ethers.providers.JsonRpcProvider(
         'https://evm.wasp.sc.iota-defi.com'
       ),

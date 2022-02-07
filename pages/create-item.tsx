@@ -11,6 +11,7 @@ import Web3Modal from 'web3modal'
 const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0')
 
 const CreateItem: NextPage = () => {
+  const [listingPrice, setListingPrice] = React.useState<string | null>(null)
   const [fileUrl, setFileUrl] = React.useState<string | null>(null)
   const [formInput, updateFormInput] = React.useState({
     price: '',
@@ -30,7 +31,13 @@ const CreateItem: NextPage = () => {
   // Wait for the context to load
   React.useEffect(() => {
     if (!contextLoading) {
-      console.log('!contextLoading')
+      // Fetch the listing price
+      const fetchListingPrice = async () => {
+        const listingPrice = await getListingPrice()
+        setListingPrice(listingPrice)
+      }
+      fetchListingPrice()
+
       setNetworkInfoChanged(false)
     }
   }, [contextLoading])
@@ -42,6 +49,21 @@ const CreateItem: NextPage = () => {
       setNetworkInfoChanged(false)
     }
   }, [networkInfoChanged])
+
+  async function getListingPrice(): Promise<string> {
+    const web3Modal = new Web3Modal()
+    const connection = await web3Modal.connect()
+    const provider = new ethers.providers.Web3Provider(connection)
+    const signer = provider.getSigner()
+
+    const contract = new ethers.Contract(
+      networkInfo.nftMarketABI.address,
+      networkInfo.nftMarketABI.abi,
+      signer
+    )
+    const listingPrice = await contract.getListingPrice()
+    return listingPrice.toString()
+  }
 
   async function onChange(e): Promise<void> {
     const file = e.target.files[0]
@@ -122,9 +144,15 @@ const CreateItem: NextPage = () => {
     return (
       <div className="flex justify-center">
         <div className="flex flex-col w-1/2 pb-12">
+          <h2 className="mt-8">
+            Listing Fee:{' '}
+            {listingPrice
+              ? ethers.utils.formatEther(listingPrice)
+              : 'Loading...'}
+          </h2>
           <input
             placeholder="Asset Name"
-            className="p-4 mt-8 border rounded"
+            className="p-4 mt-4 border rounded"
             onChange={(e) =>
               updateFormInput({ ...formInput, name: e.target.value })
             }

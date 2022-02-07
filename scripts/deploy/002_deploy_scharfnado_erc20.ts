@@ -41,9 +41,6 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
   // Mint snado to faucet
   const snadoAmount = ethers.utils.parseEther('1000')
   await snado.mint(faucetDeployment.address, snadoAmount)
-
-  // Validate the amount of snado in faucet
-  const faucetBalance = await snado.balanceOf(faucetDeployment.address)
 }
 
 func.tags = [CONTRACTS.scharfnadoERC20, 'erc20']

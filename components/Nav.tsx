@@ -20,10 +20,22 @@ export default function Nav(): React.ReactElement {
 
   // Set the network info from the context on page load
   React.useEffect(() => {
-    // Wait for the context to load
+    // Here's where we load the network info for the first time on page load:
     if (contextLoading) {
-      const net = GetNetwork(defaultNetwork)
-      setNetworkInfo(net)
+      const selectedNetworkLS = localStorage.getItem('SelectedNetwork')
+
+      // Override the default network if a localstorage setting exists
+      const selectedNetwork =
+        selectedNetworkLS && selectedNetworkLS !== 'null'
+          ? selectedNetworkLS
+          : GetDefaultNetwork()
+
+      // Set the network in the context
+      setNetworkInfo(GetNetwork(selectedNetwork))
+      // Set the localstorage
+      localStorage.setItem('SelectedNetwork', selectedNetwork)
+
+      // Indicate that the context is no longer loading
       setContextLoading(false)
     }
   }, [contextLoading])
@@ -66,7 +78,7 @@ export default function Nav(): React.ReactElement {
   if (contextLoading) {
     return <div>Loading...</div>
   } else {
-    checkAccounts()
+    // checkAccounts()
 
     return (
       <nav className="p-6 border-b">
@@ -79,6 +91,7 @@ export default function Nav(): React.ReactElement {
               value={networkInfo.network}
               onChangeHandler={(option) => {
                 setNetworkInfo(GetNetwork(option))
+                localStorage.setItem('SelectedNetwork', option)
                 setNetworkInfoChanged(true)
               }}
             ></Selector>
@@ -115,6 +128,9 @@ export default function Nav(): React.ReactElement {
           <Link href="/creator-dashboard">
             <a className="mr-6 text-pink-500">Creator Dashboard</a>
           </Link>
+          <Link href="/scharfnado-faucet">
+            <a className="mr-6 text-pink-500">Scharfnado Faucet</a>
+          </Link>{' '}
         </div>
       </nav>
     )

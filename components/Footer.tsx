@@ -23,6 +23,10 @@ export default function Footer(): React.ReactElement {
         {networkInfo?.nftMarketABI?.address}
       </p>
       <p>(C)networkInfo.nftABI.address: {networkInfo?.nftABI?.address}</p>
+      <p>
+        (C)networkInfo.snadoFaucetABI.address:{' '}
+        {networkInfo?.snadoFaucetABI?.address}
+      </p>
       <p>Environment: {environment}</p>
     </footer>
   )

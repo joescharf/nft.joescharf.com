@@ -12,6 +12,8 @@ export type MarketItem = {
 
 export type NetworkInfo = {
   network?: string
+  listingFee?: string
+  listingSymbol?: string
   chainId?: string
   chainName?: string
   symbol?: string
@@ -21,4 +23,5 @@ export type NetworkInfo = {
   provider?: ethers.providers.Provider | ethers.Signer | undefined
   nftMarketABI?: any
   nftABI?: any
+  snadoFaucetABI?: any
 }
