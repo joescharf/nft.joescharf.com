@@ -4,16 +4,16 @@
 ## Intro
 This app is based on [Nader Dabit's](https://twitter.com/dabit3) excellent [How to Build a Full Stack NFT Marketplace with Polygon and Next.js](https://www.youtube.com/watch?v=GKJBEEXUha0) tutorial available from this [github repository](https://github.com/dabit3/polygon-ethereum-nextjs-marketplace/). 
 
-I have used this tutorial to come up to speed and experiment with smart contracts and frontend web3 primitives. I've also added some additional features and updates:
+I have used this tutorial to come up to speed and experiment with smart contracts and frontend web3 primitives. I've also added some additional features and updates.
 
 My production deployment of this repo can be found at [Scharfnado NFT Marketplace](https://nft.joescharf.com).
 
 ## Additions to source repo
 * Typescript as much as possible
+* [hardhat-deploy plugin](https://github.com/wighawag/hardhat-deploy) to simplify contract deployment and testing with [hardhat](https://hardhat.org/)
 * Multi-chain capability - define your chains in `conf/networkInfo.*.ts`
 * Network (chain) selector persisted in localstorage
-* [hardhat-deploy plugin](https://github.com/wighawag/hardhat-deploy) to simplify contract deployment and testing with [hardhat](https://hardhat.org/)
-* Ability to set listingPrice in case you can't find the faucet for a chain.
+* Ability to set listingPrice() on NFTMarket contract in case you can't find the faucet for a chain. (i.e. listingPrice(0))
 
 
 ## Overview
