@@ -1,53 +1,68 @@
-# Web3 Apps
+# NFT Marketplace App
 
-* Frontend Framework: Next.js
-* Web3 Environment: hardhat with hardhat-deploy
-* Language: Typescript
+
+## Intro
+This app is based on [Nader Dabit's](https://twitter.com/dabit3) excellent [How to Build a Full Stack NFT Marketplace with Polygon and Next.js](https://www.youtube.com/watch?v=GKJBEEXUha0) tutorial available from this [github repository](https://github.com/dabit3/polygon-ethereum-nextjs-marketplace/). 
+
+I have used this tutorial to come up to speed and experiment with smart contracts and frontend web3 primitives. I've also added some additional features and updates:
+
+My production deployment of this repo can be found at [Scharfnado NFT Marketplace](https://nft.joescharf.com).
+
+## Additions to source repo
+* Typescript as much as possible
+* Multi-chain capability - define your chains in `conf/networkInfo.*.ts`
+* Network (chain) selector persisted in localstorage
+* [hardhat-deploy plugin](https://github.com/wighawag/hardhat-deploy) to simplify contract deployment and testing with [hardhat](https://hardhat.org/)
+* Ability to set listingPrice in case you can't find the faucet for a chain.
+
 
 ## Overview
 * `contracts` - Solidity contracts
-* `deployments/<network>` - ABIs
-* `scripts/deploy` - Deployment scripts
+* `deployments/<network>` - ABIs per network/chain
+* `scripts/deploy` - Contract deployment scripts
+* `test` - Contract tests
+* `conf` - Network configurations
   
 ## Running Locally
 
-```shell
-# checkout repo and install dependencies
+```zsh
+# 1. checkout repo and install dependencies
 git clone ...
-cd web3.joescharf.com
+cd nft.joescharf.com
 yarn install
 
-# set values in .env and .env.local
+# 2. Set configuration
+## set .env required environment values (see .env.example)
+## configure development and production networks in conf/networkInfo.*.ts
 
-# deploy contracts to local hardhat json-rpc node
+# 3. Deploy Contracts: 
+## (optional) test the contracts:
+yarn hardhat test
+
+## Launch local hardhat network and deploy contracts
 yarn hardhat node
 
-# start local next.js dev server
+# 4. Start Frontend: Launch nextJS dev server
 yarn dev
+
+# navigate to http://localhost:3000
 ```
----
-## Frontend
 
-### Commands
-`yarn dev` - Execute development server
-
-### Environment
 ---
 ## Solidity Contracts 
 ### Hardhat tasks
 
-* `yarn hardhat test` - run contract test scripts
 * `yarn hardhat node` - load hardhat rpc network and deploy contracts
-* `yarn hardhat deploy --network <network_name>` - Deploy contracts to specified network
+* `yarn hardhat test [--network <network_name>` - run contract test scripts (--network specifies alt network)
+* `yarn hardhat deploy --network <network_name> [--reset]` - Deploy contracts to specified network (--reset resets existing deployments)
 
 ### Networks:
 * `hardhat` - Hardhat local network
 * `mumbai` - Polygon Mumbai testnet
-* `mainnet` - Polygon mainnet
 * `iotadefi` - iota-defi.com IOTA EVM
 
 ---
-### Other hardhat info
+### Other info provided by hardhat install
 
 Try running some of the following tasks:
 
@@ -88,23 +103,3 @@ npx hardhat verify --network ropsten DEPLOYED_CONTRACT_ADDRESS "Hello, Hardhat!"
 ### Performance optimizations
 
 For faster runs of your tests and scripts, consider skipping ts-node's type checking by setting the environment variable `TS_NODE_TRANSPILE_ONLY` to `1` in hardhat's environment. For more details see [the documentation](https://hardhat.org/guides/typescript.html#performance-optimizations).
-
-
-# Notes:
-
-```
-You need to install these dependencies to run the sample project:
-  yarn add --dev "hardhat@^2.8.3" "@nomiclabs/hardhat-waffle@^2.0.0" "ethereum-waffle@^3.0.0" "chai@^4.2.0" "@nomiclabs/hardhat-ethers@^2.0.0" "ethers@^5.0.0" "@nomiclabs/hardhat-etherscan@^2.1.3" "dotenv@^10.0.0" "eslint@^7.29.0" "eslint-config-prettier@^8.3.0" "eslint-config-standard@^16.0.3" "eslint-plugin-import@^2.23.4" "eslint-plugin-node@^11.1.0" "eslint-plugin-prettier@^3.4.0" "eslint-plugin-promise@^5.1.0" "hardhat-gas-reporter@^1.0.4" "prettier@^2.3.2" "prettier-plugin-solidity@^1.0.0-beta.13" "solhint@^3.3.6" "solidity-coverage@^0.7.16" "@typechain/ethers-v5@^7.0.1" "@typechain/hardhat@^2.3.0" "@typescript-eslint/eslint-plugin@^4.29.1" "@typescript-eslint/parser@^4.29.1" "@types/chai@^4.2.21" "@types/node@^12.0.0" "@types/mocha@^9.0.0" "ts-node@^10.1.0" "typechain@^5.1.2" "typescript@^4.5.2"
-
-```
-Mumbai deployment `yarn hardhat deploy --network mumbai`
-
-deploying "NFTMarket" (tx: 0x534f73189ba4e16c5ceb578776e3558e3f0a8b466717de8b4d0b4cb43404235e)...: deployed at 0x7F220ddbd322AB6e20367Bd69030cBa9C654A4d4 with 1500897 gas
-deploying "NFT" (tx: 0x4c31200aca1588f2e9e7aea5e008d1f03bd0094a0a904465d273032deb293a82)...: deployed at 0x67360B4b85aaB3b04E5eDa2f83D2e3e443245D2F with 2523747 gas
-
-Iota-defi.com Deployment: `yarn hardhat deploy --network iotadefi`
-
-deploying "NFTMarket" (tx: 0xf11431bfcca5057c8ba949e8c54106ca0362bad43890721dac2f5c1ed89112cc)...: deployed at 0x7F220ddbd322AB6e20367Bd69030cBa9C654A4d4 with 1500897 gas
-deploying "NFT" (tx: 0xe8edc4616983467ace608fdf5c08008735a19a23879dc1a2bf8eed363589bd37)...: deployed at 0x67360B4b85aaB3b04E5eDa2f83D2e3e443245D2F with 2523747 gas
-
-Reset deployment like so: `yarn hardhat deploy --network iotadefi --reset`
